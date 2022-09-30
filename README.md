@@ -1,3 +1,9 @@
+# Renamable xNodeGroups
+
+An alteration to the xNodeGroups plugin for xNode allowing you to rename groups while they have nodes within them
+
+Original description follows:
+
 # xNodeGroups
 A small addon for xNode that lets you add groups to your graphs
 
