@@ -107,5 +107,37 @@ namespace XNodeEditor.NodeGroups {
 		public static void AddMouseRect(Rect rect) {
 			EditorGUIUtility.AddCursorRect(rect, MouseCursor.ResizeUpLeft);
 		}
+
+        public override void AddContextMenuItems(GenericMenu menu)
+		{
+			bool canRemove = true;
+
+			menu.AddItem(new GUIContent("Rename Group"), false, RenameNodeGroup);
+
+			// Add actions to any number of selected nodes
+			menu.AddItem(new GUIContent("Copy"), false, NodeEditorWindow.current.CopySelectedNodes);
+			menu.AddItem(new GUIContent("Duplicate"), false, NodeEditorWindow.current.DuplicateSelectedNodes);
+
+			if (canRemove) menu.AddItem(new GUIContent("Remove"), false, NodeEditorWindow.current.RemoveSelectedNodes);
+			else menu.AddItem(new GUIContent("Remove"), false, null);
+        }
+
+		public void RenameNodeGroup()
+        {
+			List<UnityEngine.Object> nodeGroups = Selection.objects.ToList().Where(x => x is NodeGroup).ToList();
+			if(nodeGroups.Count == 1)
+			{
+				NodeGroup group = nodeGroups[0] as NodeGroup;
+				Vector2 size;
+				if (NodeEditorWindow.current.nodeSizes.TryGetValue(group as XNode.Node, out size))
+				{
+					RenamePopup.Show(group, size.x);
+				}
+				else
+				{
+					RenamePopup.Show(group);
+				}
+			}
+		}
 	}
 }
